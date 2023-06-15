@@ -5,10 +5,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-import time
+# import time
 
 options = Options()
 options.add_argument("--lang=en-US")
+
+num_problems_solved = 0
 
 # to remove the banner
 options.add_experimental_option("useAutomationExtension", False)
@@ -40,11 +42,15 @@ def close_current_tab():
     driver.switch_to.window(driver.window_handles[-1])
 
 for url in urls:
+    num_problems_solved = num_problems_solved + 1
     open_new_tab(url)  
     close_current_tab()
     switch_to_new_tab() 
-    element = wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, 'complete'), 'Success!'))
-    if element:
-        continue
+    wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, 'complete'), 'Success!'))
+    # element = wait.until(EC.text_to_be_present_in_element((By.CLASS_NAME, 'complete'), 'Success!'))
+    # if element:
+    #     continue
+
+print("you solved " + num_problems_solved + " puzzles")
 
 driver.quit()
